@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import main.Alignment;
 import main.Imageable;
+import main.RelativePosition;
 
 /**
  * 文本图层
@@ -35,6 +36,10 @@ public class TextLayer implements Imageable {
    * 对齐方式
    */
   private Alignment alignment;
+  /**
+   * 相对位置
+   */
+  private RelativePosition pos = RelativePosition.LEFT_BOTTOM;
 
   /**
    * 
@@ -42,6 +47,7 @@ public class TextLayer implements Imageable {
   public TextLayer() {
     log.debug("构造TextLayer：" + this.hashCode());
     setAlignment(Alignment.LEFT);
+    setPos(RelativePosition.LEFT_BOTTOM);
   }
 
   /**
@@ -77,7 +83,7 @@ public class TextLayer implements Imageable {
     log.debug("宽：" + width + "，高：" + height);
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     Graphics g = img.getGraphics();
-    g.setColor(Color.WHITE);
+    g.setColor(new Color(0, 0, 0, 0));
     g.fillRect(0, 0, width, height);
 
     switch (getAlignment()) {
@@ -141,5 +147,20 @@ public class TextLayer implements Imageable {
   public void setAlignment(Alignment alignment) {
     log.debug("设置对齐方式：" + alignment.toString());
     this.alignment = alignment;
+  }
+
+  /**
+   * @return the pos
+   */
+  public RelativePosition getPos() {
+    return pos;
+  }
+
+  /**
+   * @param pos the pos to set
+   */
+  public void setPos(RelativePosition pos) {
+    log.debug("设置相对位置：" + pos.toString());
+    this.pos = pos;
   }
 }
