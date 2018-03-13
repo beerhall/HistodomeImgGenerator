@@ -17,5 +17,9 @@ public enum Alignment {
   /**
    * 右
    */
-  RIGHT
+  RIGHT,
+  /**
+   * 中
+   */
+  CENTER
 }
