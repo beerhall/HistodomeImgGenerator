@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import model.TextLayer;
 import model.TextLine;
 import util.ExcelReader;
 
@@ -27,19 +28,26 @@ public class Main {
 
   /**
    * @param args
-   * @throws Exception 
+   * @throws Exception
    */
   public static void main(String[] args) {
     Logger log = LogManager.getLogger(Main.class.getName());
     try {
-      TextLine tl = new TextLine(new Font("微软雅黑",Font.PLAIN,100), 7000, "三1四t五2六3u七八九4v一N三1四6二十7三十四8十五9十六一二三1四五2六3七八九4十十5一十6二十7三十四8十五9十六一二三1四五2六3七八九4十十5一十6二十7三十四8十五9十六一二三1四五2六3七八九4十十5一十6二十7三十四8十五9十六一二三1四五2六3七八九4十十5一十6二十7三十四8十五9十六一二三1四五2六3七八九4十十5一十6二十7三十四8十五9十六一二三1四五2六3七八九4十十5一十6二十7三十四8十五9十六", Alignment.CENTER, Color.BLACK);
-      tl.getImg();
-      log.info("获取图像");
-      ImageIO.write(tl.getImg(), "png", new File("output\\test.png"));
+      TextLine tl1 = new TextLine(new Font("微软雅黑", Font.BOLD, 150), 7000, "第9位", Alignment.CENTER,
+          Color.BLACK);
+      TextLine tl2 = new TextLine(new Font("微软雅黑", Font.PLAIN, 100), 7000, "1997年2月18日",
+          Alignment.LEFT, Color.BLACK);
+
+      TextLayer layer = new TextLayer();
+      layer.addText(tl1);
+      layer.addText(tl2);
+      layer.setAlignment(Alignment.CENTER);
+
+      ImageIO.write(layer.getImg(), "png", new File("output\\test.png"));
       log.info("输出：test.png");
     } catch (Exception e) {
       StringWriter stringWriter = new StringWriter();
-      PrintWriter  printWriter  = new PrintWriter(stringWriter);
+      PrintWriter printWriter = new PrintWriter(stringWriter);
       e.printStackTrace(printWriter);
       log.error(stringWriter.toString());
       printWriter.close();

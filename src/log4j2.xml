@@ -11,7 +11,7 @@
     </Console>
     <File name="InfoFile" fileName="${infofile}" append="false">
       <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
-      <PatternLayout pattern="[%d] [%p] [%l] %m%n"/>
+      <PatternLayout pattern="[%d] [%p] %m%n"/>
     </File>
     <File name="DebugFile" fileName="${debugfile}" append="false">
       <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>

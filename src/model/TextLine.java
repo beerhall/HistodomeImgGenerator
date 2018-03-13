@@ -72,7 +72,7 @@ public class TextLine implements Imageable {
    */
   @Override
   public BufferedImage getImg() {
-    Color transparent = Color.WHITE;// new Color(0,0,0,0);
+    Color transparent = new Color(0, 0, 0, 0);
     BufferedImage img;
     Graphics g = (new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)).getGraphics();;
     if (getLimit() == 0) {
@@ -87,7 +87,11 @@ public class TextLine implements Imageable {
       g.dispose();
     } else {
       ArrayList<String> strs = splitStr(getText());
-      img = new BufferedImage(limit, (int) strs.size() * g.getFontMetrics(getFont()).getHeight(),
+      int width = limit;
+      if (strs.size() == 1) {
+        width = (int) (getRealLength(getText()));
+      }
+      img = new BufferedImage(width, strs.size() * g.getFontMetrics(getFont()).getHeight(),
           BufferedImage.TYPE_INT_ARGB);
       g = img.getGraphics();
       g.setColor(transparent);
@@ -99,9 +103,11 @@ public class TextLine implements Imageable {
         if (getAlignment() == Alignment.LEFT) {
           g.drawString(str, 0, (int) y);
         } else if (getAlignment() == Alignment.RIGHT) {
-          g.drawString(str, (int) (getLimit() - getRealLength(str)), (int) y);
+          g.drawString(str, (int) (width - getRealLength(str)), (int) y);
+        } else if (getAlignment() == Alignment.CENTER) {
+          g.drawString(str, (int) ((width - getRealLength(str)) / 2), (int) y);
         } else {
-          g.drawString(str, (int) ((getLimit() - getRealLength(str)) / 2), (int) y);
+          log.error("对齐方式错误");
         }
         y += g.getFontMetrics().getHeight();
       }

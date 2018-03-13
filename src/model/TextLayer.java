@@ -3,6 +3,8 @@
  */
 package model;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +28,11 @@ public class TextLayer implements Imageable {
    */
   private ArrayList<TextLine> texts = new ArrayList<TextLine>();
   /**
-   * 对齐类型
+   * 文本图像列表
+   */
+  private ArrayList<BufferedImage> imgs = new ArrayList<BufferedImage>();
+  /**
+   * 对齐方式
    */
   private Alignment alignment;
 
@@ -34,7 +40,7 @@ public class TextLayer implements Imageable {
    * 
    */
   public TextLayer() {
-    log.debug("构造TextLayer："+this.hashCode());
+    log.debug("构造TextLayer：" + this.hashCode());
     setAlignment(Alignment.LEFT);
   }
 
@@ -56,8 +62,56 @@ public class TextLayer implements Imageable {
    */
   @Override
   public BufferedImage getImg() {
-    // TODO Auto-generated method stub
-    return null;
+    int width = 0;
+    int height = 0;
+    for (TextLine tl : texts) {
+      log.debug(tl.getImg().getWidth()); // test
+      imgs.add(tl.getImg());
+    }
+    for (BufferedImage bi : imgs) {
+      if (width < bi.getWidth()) {
+        width = bi.getWidth();
+      }
+      height += bi.getHeight();
+    }
+    log.debug("宽：" + width + "，高：" + height);
+    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics g = img.getGraphics();
+    g.setColor(Color.WHITE);
+    g.fillRect(0, 0, width, height);
+
+    switch (getAlignment()) {
+      case LEFT: {
+        int y = 0;
+        for (BufferedImage bi : imgs) {
+          g.drawImage(bi, 0, y, null);
+          y += bi.getHeight();
+        }
+      }
+        break;
+      case RIGHT: {
+        int y = 0;
+        for (BufferedImage bi : imgs) {
+          log.debug(width + "\t" + bi.getWidth()); // test
+          g.drawImage(bi, width - bi.getWidth(), y, null);
+          y += bi.getHeight();
+        }
+      }
+        break;
+      case CENTER: {
+        int y = 0;
+        for (BufferedImage bi : imgs) {
+          g.drawImage(bi, (width - bi.getWidth()) / 2, y, null);
+          y += bi.getHeight();
+        }
+      }
+        break;
+      default:
+        break;
+    }
+    g.dispose();
+
+    return img;
   }
 
   /**
@@ -88,5 +142,4 @@ public class TextLayer implements Imageable {
     log.debug("设置对齐方式：" + alignment.toString());
     this.alignment = alignment;
   }
-
 }
