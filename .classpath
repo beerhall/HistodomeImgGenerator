@@ -21,7 +21,6 @@
 	<classpathentry kind="lib" path="lib/log4j-liquibase-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-mongodb-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-taglib-2.10.0.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-to-slf4j-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-web-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.17.jar"/>
 	<classpathentry kind="lib" path="lib/poi-excelant-3.17.jar"/>

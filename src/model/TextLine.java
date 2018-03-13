@@ -5,6 +5,8 @@ package model;
 
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import main.Imageable;
 
 /**
@@ -14,6 +16,10 @@ import main.Imageable;
  *
  */
 public class TextLine implements Imageable {
+  /**
+   * 日志工具
+   */
+  private Logger log = LogManager.getLogger(TextLine.class.getName());
   /**
    * 字体
    */
@@ -35,12 +41,16 @@ public class TextLine implements Imageable {
    * @param _text 文本
    */
   public TextLine(Font _font, int _limit, String _text) {
+    log.debug("构造TextLine：" + this.hashCode() + "，字体：" + _font.getName() + "，大小：" + _font.getSize()
+        + "，样式：" + _font.getStyle() + "，长度限制：" + _limit + "，文本内容：" + _text);
     setFont(_font);
     setLimit(_limit);
     setText(_text);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see main.Imageable#getImg()
    */
   @Override

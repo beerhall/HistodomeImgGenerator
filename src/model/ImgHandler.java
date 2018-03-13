@@ -5,6 +5,8 @@ package model;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import main.Imageable;
 import main.RelativePosition;
 
@@ -15,6 +17,10 @@ import main.RelativePosition;
  *
  */
 public class ImgHandler implements Imageable {
+  /**
+   * 日志工具
+   */
+  private Logger log = LogManager.getLogger(ImgHandler.class.getName());
   /**
    * 底图
    */
@@ -43,6 +49,7 @@ public class ImgHandler implements Imageable {
    * @param _pos 相对位置
    */
   public ImgHandler(BufferedImage _baseImg, RelativePosition _pos) {
+    log.debug("构造ImgHandeler："+this.hashCode()+"，底图：" + _baseImg.toString() + "，相对位置：" + _pos.toString());
     setBaseImg(_baseImg);
     setPos(pos);
     calcPos();
@@ -56,6 +63,7 @@ public class ImgHandler implements Imageable {
    * @param _y 绝对纵坐标
    */
   public ImgHandler(BufferedImage _baseImg, int _x, int _y) {
+    log.debug("构造ImgHandeler，底图：" + _baseImg.toString() + "，绝对位置X：" + _x + "，Y：" + _y);
     setBaseImg(_baseImg);
     setX(_x);
     setY(_y);
