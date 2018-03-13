@@ -28,7 +28,6 @@ public class Main {
 
   /**
    * @param args
-   * @throws Exception
    */
   public static void main(String[] args) {
     Logger log = LogManager.getLogger(Main.class.getName());
