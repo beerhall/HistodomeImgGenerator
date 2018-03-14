@@ -72,6 +72,7 @@ public class TextLine implements Imageable {
    */
   @Override
   public BufferedImage getImg() {
+    log.debug("获取TextLine：" + this.hashCode() + "的图像");
     Color transparent = new Color(0, 0, 0, 0);
     BufferedImage img;
     Graphics g = (new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)).getGraphics();;
@@ -123,11 +124,13 @@ public class TextLine implements Imageable {
    * @return 字符串的真实长度
    */
   private float getRealLength(String str) {
+    log.debug("在TextLine：" + this.hashCode() + "计算字符串：" + str + "的真实长度");
     Graphics g = (new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)).getGraphics();
     float length = 0;
     for (int i = 0; i < str.length(); i++) {
       length += g.getFontMetrics(getFont()).charWidth(str.charAt(i));
     }
+    log.debug("字符串：" + str + "的真实长度是：" + length);
     return length;
   }
 
@@ -138,6 +141,8 @@ public class TextLine implements Imageable {
    * @return 分离的字符串
    */
   private ArrayList<String> splitStr(String str) {
+    log.debug("在TextLine：" + this.hashCode() + "分离字符串：" + str + "，真实长度为：" + getRealLength(str)
+        + "，长度限制为：" + getLimit());
     ArrayList<String> lines = new ArrayList<String>();
     if (getRealLength(str) > getLimit()) {
       String str_clone = str;
@@ -154,6 +159,7 @@ public class TextLine implements Imageable {
     } else {
       lines.add(str);
     }
+    log.debug("字符串：" + str + "被分离为" + lines.size() + "段");
     return lines;
   }
 

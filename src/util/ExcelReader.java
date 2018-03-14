@@ -69,6 +69,7 @@ public class ExcelReader {
       e.printStackTrace();
       throw e;
     }
+    log.debug("读取文件" + file.getName() + "成功，返回数据" + data);
     return data;
   }
 

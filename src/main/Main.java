@@ -52,7 +52,7 @@ public class Main {
       layer.setAlignment(Alignment.CENTER);
 
       ImgHandler ih = new ImgHandler(bi);
-      ih.addLayer(layer);
+      ih.addLayer(layer, RelativePosition.LEFT_TOP);
 
 
       ImageIO.write(ih.getImg(), "png", new File("output\\test.png"));

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import main.Imageable;
+import main.RelativePosition;
 
 /**
  * 图片处理器
@@ -36,7 +37,7 @@ public class ImgHandler implements Imageable {
    * @param _baseImg 底图
    */
   public ImgHandler(BufferedImage _baseImg) {
-    log.debug("构造ImgHandeler，底图：" + _baseImg.toString());
+    log.debug("构造ImgHandeler：" + this.hashCode() + "，底图：" + _baseImg.toString());
     setBaseImg(_baseImg);
   }
 
@@ -47,40 +48,17 @@ public class ImgHandler implements Imageable {
    */
   @Override
   public BufferedImage getImg() {
+    log.debug("获取ImgHandler：" + this.hashCode() + "的图像");
     BufferedImage img = getBaseImg();
     Graphics g = img.getGraphics();
-    g.drawImage(img, 0, 0, null);
 
     for (TextLayer layer : textLayers) {
       BufferedImage bi = layer.getImg();
-      switch (layer.getPos()) {
-        case LEFT_BOTTOM: {
-          int x = 0;
-          int y = img.getHeight() - bi.getHeight();
-          g.drawImage(bi, x, y, null);
-        }
-          break;
-        case LEFT_TOP: {
-          int x = 0;
-          int y = 0;
-          g.drawImage(bi, x, y, null);
-        }
-          break;
-        case RIGHT_BOTTOM: {
-          int x = img.getWidth() - bi.getWidth();
-          int y = img.getHeight() - bi.getHeight();
-          g.drawImage(bi, x, y, null);
-        }
-          break;
-        case RIGHT_TOP: {
-          int x = img.getWidth() - bi.getWidth();
-          int y = 0;
-          g.drawImage(bi, x, y, null);
-        }
-          break;
-        default:
-          break;
+      if (layer.getPos() != null) {
+        calcPos(layer, bi.getWidth(), bi.getHeight());
       }
+      log.debug("在ImgHandler：" + this.hashCode() + "画图层：" + layer.hashCode());
+      g.drawImage(bi, layer.getX(), layer.getY(), null);
     }
 
     g.dispose();
@@ -91,9 +69,63 @@ public class ImgHandler implements Imageable {
    * 增加文本图层
    * 
    * @param layer 文本图层
+   * @param pos 相对位置
    */
-  public void addLayer(TextLayer layer) {
+  public void addLayer(TextLayer layer, RelativePosition pos) {
+    log.debug("在ImgHanlder：" + this.hashCode() + "中添加TextLayer：" + layer.hashCode() + "，相对位置："
+        + pos.toString());
+    layer.setPos(pos);
     textLayers.add(layer);
+  }
+
+  /**
+   * 增加文本图层
+   * 
+   * @param layer 文本图层
+   * @param X 绝对横坐标
+   * @param Y 绝对纵坐标
+   */
+  public void addLayer(TextLayer layer, int X, int Y) {
+    log.debug("在ImgHanlder中：" + this.hashCode() + "添加TextLayer：" + layer.hashCode() + "，绝对坐标X：" + X
+        + "，Y：" + Y);
+    layer.setX(X);
+    layer.setY(Y);
+    textLayers.add(layer);
+  }
+
+  /**
+   * 计算绝对位置
+   * 
+   * @param layer 图层
+   * @param layerWidth 图层宽
+   * @param layerHeight 图层高
+   */
+  public void calcPos(TextLayer layer, int layerWidth, int layerHeight) {
+    log.debug("在ImgHanlder：" + this.hashCode() + "中计算图层：" + layer.hashCode() + "的绝对位置");
+    switch (layer.getPos()) {
+      case LEFT_BOTTOM: {
+        layer.setX(0);
+        layer.setY(getBaseImg().getHeight() - layerHeight);
+      }
+        break;
+      case LEFT_TOP: {
+        layer.setX(0);
+        layer.setY(0);
+      }
+        break;
+      case RIGHT_BOTTOM: {
+        layer.setX(getBaseImg().getWidth() - layerWidth);
+        layer.setY(getBaseImg().getHeight() - layerHeight);
+      }
+        break;
+      case RIGHT_TOP: {
+        layer.setX(getBaseImg().getWidth() - layerWidth);
+        layer.setY(0);
+      }
+        break;
+      default:
+        break;
+    }
   }
 
   /**

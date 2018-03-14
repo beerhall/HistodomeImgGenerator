@@ -39,7 +39,16 @@ public class TextLayer implements Imageable {
   /**
    * 相对位置
    */
-  private RelativePosition pos = RelativePosition.LEFT_BOTTOM;
+  private RelativePosition pos = null;
+  /**
+   * 绝对坐标X
+   */
+  private int X = 0;
+  /**
+   * 绝对坐标Y
+   */
+  private int Y = 0;
+
 
   /**
    * 
@@ -47,7 +56,6 @@ public class TextLayer implements Imageable {
   public TextLayer() {
     log.debug("构造TextLayer：" + this.hashCode());
     setAlignment(Alignment.LEFT);
-    setPos(RelativePosition.LEFT_BOTTOM);
   }
 
   /**
@@ -57,7 +65,7 @@ public class TextLayer implements Imageable {
    * @return true
    */
   public boolean addText(TextLine textline) {
-    log.debug("添加文本：" + textline.getText());
+    log.debug("在TextLayer：" + this.hashCode() + "中添加文本：" + textline.getText());
     return getTexts().add(textline);
   }
 
@@ -68,10 +76,10 @@ public class TextLayer implements Imageable {
    */
   @Override
   public BufferedImage getImg() {
+    log.debug("获取TextLayer：" + this.hashCode() + "的图像");
     int width = 0;
     int height = 0;
     for (TextLine tl : texts) {
-      log.debug(tl.getImg().getWidth()); // test
       imgs.add(tl.getImg());
     }
     for (BufferedImage bi : imgs) {
@@ -80,7 +88,7 @@ public class TextLayer implements Imageable {
       }
       height += bi.getHeight();
     }
-    log.debug("宽：" + width + "，高：" + height);
+    log.debug("图层" + this.hashCode() + "，宽：" + width + "，高：" + height);
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     Graphics g = img.getGraphics();
     g.setColor(new Color(0, 0, 0, 0));
@@ -145,7 +153,7 @@ public class TextLayer implements Imageable {
    * @param alignment the alignment to set
    */
   public void setAlignment(Alignment alignment) {
-    log.debug("设置对齐方式：" + alignment.toString());
+    log.debug("在TextLayer：" + this.hashCode() + "中设置对齐方式：" + alignment.toString());
     this.alignment = alignment;
   }
 
@@ -160,7 +168,35 @@ public class TextLayer implements Imageable {
    * @param pos the pos to set
    */
   public void setPos(RelativePosition pos) {
-    log.debug("设置相对位置：" + pos.toString());
+    log.debug("在TextLayer：" + this.hashCode() + "中设置相对位置：" + pos.toString());
     this.pos = pos;
+  }
+
+  /**
+   * @return the x
+   */
+  public int getX() {
+    return X;
+  }
+
+  /**
+   * @param x the x to set
+   */
+  public void setX(int x) {
+    X = x;
+  }
+
+  /**
+   * @return the y
+   */
+  public int getY() {
+    return Y;
+  }
+
+  /**
+   * @param y the y to set
+   */
+  public void setY(int y) {
+    Y = y;
   }
 }
